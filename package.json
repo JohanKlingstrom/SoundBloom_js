@@ -1,0 +1,11 @@
+{
+  "name": "soundbloom_js",
+  "version": "1.0.0",
+  "description": "An audio visualizer using the canvas element",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Johan Klingström",
+  "license": "ISC"
+}
