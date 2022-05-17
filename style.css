@@ -36,7 +36,16 @@
 
 h1 {
     position: absolute;
-    top: 150px;
+    top: 50px;
     color: white;
     z-index: 100;
+}
+
+#secret {
+    position: absolute;
+    left: 100;
+    bottom: 0;
+    color: black;
+    z-index: 100;
+    user-select: none;
 }

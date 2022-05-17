@@ -15,11 +15,11 @@ container.addEventListener('click', function(){
     analyser = audioContext.createAnalyser();
     audioSource.connect(analyser);
     analyser.connect(audioContext.destination);
-    analyser.fftSize = 64;
+    analyser.fftSize = 2048;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    const barWidth = canvas.width/bufferLength;
+    const barWidth = 15;
     let barHeight;
     let x;
 
@@ -27,12 +27,7 @@ container.addEventListener('click', function(){
         x = 0;
         context.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
-        for (let i = 0; i < bufferLength; i++){
-            barHeight = dataArray[i];
-            context.fillStyle = 'white';
-            context.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-            x += barWidth;
-        }
+        drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray)
         requestAnimationFrame(animate);
     }
     animate(); 
@@ -49,11 +44,11 @@ file.addEventListener('change', function(){
     analyser = audioContext.createAnalyser();
     audioSource.connect(analyser);
     analyser.connect(audioContext.destination);
-    analyser.fftSize = 64;
+    analyser.fftSize = 2048;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
-    const barWidth = canvas.width/bufferLength;
+    const barWidth = 15;
     let barHeight;
     let x;
 
@@ -61,13 +56,25 @@ file.addEventListener('change', function(){
         x = 0;
         context.clearRect(0, 0, canvas.width, canvas.height);
         analyser.getByteFrequencyData(dataArray);
-        for (let i = 0; i < bufferLength; i++){
-            barHeight = dataArray[i];
-            context.fillStyle = 'white';
-            context.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-            x += barWidth;
-        }
+        drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray)
         requestAnimationFrame(animate);
     }
     animate(); 
 })
+
+function drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray){
+    for (let i = 0; i < bufferLength; i++){
+        barHeight = dataArray[i] * 1.5;
+        context.save();
+        context.translate(canvas.width/2, canvas.height/2);
+        context.rotate(i * 2.184);
+
+        const hue = i * 0.1;
+
+
+        context.fillStyle = 'hsl(' + hue + ',100%, ' + barHeight/3 + '%)';
+        context.fillRect(0, 0, barWidth, barHeight);
+        x += barWidth;
+        context.restore();
+    }
+}
